@@ -4,7 +4,7 @@ services:
     hostname: spark-executor
     build: .
 #    ports:
-#      - 8083:8080
+#      - 8080:8080
 #      - 4040:4040
     tty: true
 #    user: root
@@ -22,7 +22,6 @@ services:
       spark-iceberg-client-network:
         ipv4_address: 172.30.0.100
     restart: always
-
 networks:
   spark-iceberg-client-network:
     driver: bridge

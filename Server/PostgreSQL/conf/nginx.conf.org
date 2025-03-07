@@ -45,7 +45,7 @@ http {
 			proxy_set_header Upgrade $http_upgrade;
 			proxy_set_header Connection "upgrade";
 			chunked_transfer_encoding off;
-			proxy_pass http://rdl-adminer:8080; # This uses the upstream directive definition to load balance
+			proxy_pass http://rdl-pgsql-adminer:8080; # This uses the upstream directive definition to load balance
 		}
 	}
     include       /etc/nginx/mime.types;

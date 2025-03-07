@@ -2,7 +2,7 @@ services:
   rdl-keycloak-db:
     container_name: rdl-keycloak-db
     hostname: rdl-keycloak-db
-    image: postgres:latest
+    image: postgres:17
     volumes:
       - rdl-keycloak-db-store:/var/lib/postgresql/data
     environment:
@@ -16,7 +16,7 @@ services:
   rdl-keycloak:
     container_name: rdl-keycloak
     hostname: rdl-keycloak
-    image: quay.io/keycloak/keycloak:latest
+    image: keycloak/keycloak:26.1
     environment:
       - TZ=Asia/Tokyo
       - KC_DB=postgres

@@ -1,7 +1,7 @@
 services:
-  rdl-nginx:
-    container_name: rdl-nginx
-    hostname: rdl-nginx
+  rdl-minio-nginx:
+    container_name: rdl-minio-nginx
+    hostname: rdl-minio-nginx
     image: nginx:stable-perl
     volumes:
       - ./conf/nginx.conf:/etc/nginx/nginx.conf
@@ -56,7 +56,8 @@ services:
         ipv4_address: 172.25.0.101
     command: ["server", "/data", "--console-address", ":9001","--certs-dir","/root/.minio/certs/CAs"]
     restart: always
-
+    depends_on:
+      - rdl-minio-nginx
 volumes:
   rdl-minio-volume:
 networks:
