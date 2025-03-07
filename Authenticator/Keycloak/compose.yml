@@ -1,0 +1,60 @@
+services:
+  rdl-keycloak-db:
+    container_name: rdl-keycloak-db
+    hostname: rdl-keycloak-db
+    image: postgres:latest
+    volumes:
+      - rdl-keycloak-db-store:/var/lib/postgresql/data
+    environment:
+      - TZ=Asia/Tokyo
+      - POSTGRES_USER=${KEYCLOAK_DB_USERNAME}
+      - POSTGRES_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+    networks:
+      rdl-keycloak-network:
+        ipv4_address: 172.25.4.100
+    restart: always
+  rdl-keycloak:
+    container_name: rdl-keycloak
+    hostname: rdl-keycloak
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - TZ=Asia/Tokyo
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=rdl-keycloak-db
+      - KC_DB_URL_PORT=5432
+      - KC_DB_USERNAME=${KEYCLOAK_DB_USERNAME}
+      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      - KC_HOSTNAME=https://${DOMAIN_NAME}:8443
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_HTTPS_CERTIFICATE_FILE=/opt/certs/${DOMAIN_NAME}.crt
+      - KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/certs/${DOMAIN_NAME}.key
+    command:
+      start
+    ports:
+      - 8443:8443
+    volumes:
+      - rdl-keycloak-volume:/opt/keycloak/data
+      - ./kc.sh:/opt/keycloak/bin/kc.sh
+      - ../../certs/${DOMAIN_NAME}.ca.crt:/opt/certs/${DOMAIN_NAME}.ca.crt:ro
+      - ../../certs/${DOMAIN_NAME}.crt:/opt/certs/${DOMAIN_NAME}.crt:ro
+      - ../../certs/${DOMAIN_NAME}.key:/opt/certs/${DOMAIN_NAME}.key:ro
+    tty: true
+    user: root
+    networks:
+      rdl-keycloak-network:
+        ipv4_address: 172.25.4.101
+    restart: always
+    depends_on:
+      - rdl-keycloak-db
+volumes:
+  rdl-keycloak-volume:
+  rdl-keycloak-db-store:
+networks:
+  rdl-keycloak-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.25.4.0/24
+        gateway: 172.25.4.1

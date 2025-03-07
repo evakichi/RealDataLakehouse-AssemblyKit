@@ -1,11 +1,11 @@
 #!/bin/bash
 
-cd RDL-MinIO/
+cd MinIO/
 if ! ./init.sh;then
 	exit 200
 fi
 
-cd ../RDL-PGSQL/
+cd ../PostgreSQL/
 if ! ./init.sh;then
 	exit 201
 fi

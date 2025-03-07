@@ -14,11 +14,6 @@ fi
 
 . ../.password
 
-
-rm -f conf/spark-defaults.conf
-rm -f Dockerfile
-sudo rm -rf ./certs
-
 cat << EOF > ./.env
 MINIO_ROOT_USER='${MINIO_ROOT_USER}'
 MINIO_ROOT_PASSWORD='${MINIO_ROOT_PASSWORD}' 
@@ -35,7 +30,9 @@ sed "s/__SPARK_WAREHOUSE_NAME__/${SPARK_WAREHOUSE_NAME}/g" -i ./conf/spark-defau
 
 echo "spark.sql.catalog."${SPARK_CATALOG_NAME}".jdbc.password     "${POSTGRES_PASSWORD} >> ./conf/spark-defaults.conf
 
-cp -r ../certs ./
+if [ ! -d ./certs ];then 
+	cp -r ../certs ./
+fi
 
 COMPOSE_BAKE=true docker compose up -d --build
 exit 0;

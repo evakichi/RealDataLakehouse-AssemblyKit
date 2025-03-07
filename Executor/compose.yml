@@ -20,7 +20,7 @@ services:
       - TZ=Asia/Tokyo
     networks:
       spark-iceberg-client-network:
-        ipv4_address: 172.21.1.101
+        ipv4_address: 172.30.0.100
     restart: always
 
 networks:
@@ -29,5 +29,5 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.21.1.0/24
-        gateway: 172.21.1.1
+      - subnet: 172.30.0.0/24
+        gateway: 172.30.0.1

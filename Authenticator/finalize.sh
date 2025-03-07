@@ -1,20 +1,14 @@
 #!/bin/bash
 
-cd Authenticator/
+cd Keycloak
 if ! ./finalize.sh; then
 	echo "err"
 	exit 200
 fi
 
-cd ../Server/
+cd ../OpenLDAP
 if ! ./finalize.sh; then
 	echo "err"
 	exit 201
-fi
-
-cd ../Executor
-if ! ./finalize.sh; then
-	echo "err"
-	exit 202
 fi
 exit 0;

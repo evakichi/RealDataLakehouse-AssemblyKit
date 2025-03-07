@@ -24,12 +24,17 @@ EOF
 . ./.password
 fi
 
-cd RealDataLakehouseServer/
+cd Authenticator/
 if ! ./init.sh;then
 	exit 200
 fi
 
-cd ../RealDataLakehouseExecutor/
+cd ../Server/
 if ! ./init.sh;then
 	exit 201
+fi
+
+cd ../Executor/
+if ! ./init.sh;then
+	exit 202
 fi

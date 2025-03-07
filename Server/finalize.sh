@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd RDL-PGSQL
+cd PostgreSQL
 if ! ./finalize.sh; then
 	echo "err"
 	exit 200
 fi
 
-cd ../RDL-MinIO
+cd ../MinIO
 if ! ./finalize.sh; then
 	echo "err"
 	exit 201

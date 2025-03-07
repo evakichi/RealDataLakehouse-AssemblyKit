@@ -7,3 +7,4 @@ spark-defaults.conf
 *.key
 *.crt
 *.cer
+kc.sh
