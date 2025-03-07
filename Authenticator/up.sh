@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd RDL-MinIO/
+cd OpenLDAP/
 if ! ./up.sh; then
 	echo "err"
 	exit 200
 fi
 
-cd ../RDL-PGSQL/
+cd ../Keycloak/
 if ! ./up.sh; then
 	echo "err"
 	exit 201
