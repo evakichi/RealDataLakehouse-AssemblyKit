@@ -1,0 +1,6 @@
+server.port=8082
+resourceserver.config.authserver-url=https://__DOMAIN_NAME__:8443/realms/MinIOrealm/protocol/openid-connect/
+resourceserver.config.introspection-endpoint=token/introspect
+resourceserver.config.client-id=__SAMPLE_API_SERVER_CLIENT_ID__
+resourceserver.config.client-secret=__SAMPLE_API_SERVER_CLIENT_SECRET__
+logging.level.sample.resourceserver=DEBUG

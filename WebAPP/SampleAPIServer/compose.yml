@@ -1,0 +1,23 @@
+services:
+  rdl-sample-api-web-server:
+    container_name: rdl-sample-api-web-server
+    hostname: rdl-sample-api-server
+    build: .
+    ports:
+      - 8082:8082
+    environment:
+      - TZ=Asia/Tokyo
+    tty: true
+    user: root
+    restart: always
+    networks:
+      rdl-sample-api-server-network:
+        ipv4_address: 172.20.11.100
+networks:
+  rdl-sample-api-server-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.20.11.0/24
+        gateway: 172.20.11.1
