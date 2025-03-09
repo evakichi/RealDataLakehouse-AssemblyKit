@@ -9,3 +9,4 @@ spark-defaults.conf
 *.cer
 kc.sh
 data
+application.properties
