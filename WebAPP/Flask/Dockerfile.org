@@ -1,0 +1,22 @@
+FROM debian:bookworm
+
+RUN apt-get update && apt-get install -y ca-certificates
+RUN cd /usr/share/ca-certificates && mkdir mylocal && cp -p /etc/ca-certificates.conf /etc/ca-certificates.conf.bak
+
+COPY ./certs/__DOMAIN_NAME__.ca.crt  /certs/__DOMAIN_NAME__.ca.crt
+RUN cd /usr/share/ca-certificates && cp /certs/__DOMAIN_NAME__.ca.crt mylocal/
+RUN echo "mylocal/__DOMAIN_NAME__.ca.crt" >> /etc/ca-certificates.conf
+RUN update-ca-certificates
+
+RUN apt-get update && apt-get -y upgrade && apt-get upgrade -y && apt-get update && apt-get install -y less vim zip git python3 python3-pip python3-venv
+
+RUN git clone https://github.com/Keycloak-IAM-4-Modern-Apps-JP/Keycloak-Identity-and-Access-Management-for-Modern-Applications.git
+RUN cd /root/ && python3 -m venv Flask-Test && . Flask-Test/bin/activate && pip3 install Flask-OIDC
+COPY ./frontend_oidc-config.json /Keycloak-Identity-and-Access-Management-for-Modern-Applications/ch7/python/frontend/oidc-config.json
+#COPY ./backend_config.json /Keycloak-Identity-and-Access-Management-for-Modern-Applications/ch7/python/backend/oidc-config.json
+WORKDIR /Keycloak-Identity-and-Access-Management-for-Modern-Applications/ch7/python/frontend/
+COPY ./docker-entrypoint.sh /
+ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+#CMD ["flask","run","-p","8000"]
+#CMD ["bash"]
+CMD ["/docker-entrypoint.sh"]

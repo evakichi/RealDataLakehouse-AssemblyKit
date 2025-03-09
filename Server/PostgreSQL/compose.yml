@@ -1,13 +1,13 @@
 services:
   rdl-pgsql:
-    image: postgres:14
     container_name: rdl-pgsql
     hostname: rdl-gpsql
+    image: postgres:14
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:5432
     networks:
       rdl-pgsql-network:
-        ipv4_address: 172.20.5.101
+        ipv4_address: 172.20.0.10
     volumes:
       - rdl-pgsql-store:/var/lib/postgresql/data
       - ./certs/${DOMAIN_NAME}.crt:/var/lib/postgresql/${DOMAIN_NAME}.crt:ro
@@ -29,10 +29,10 @@ services:
       - ../../certs/${DOMAIN_NAME}.crt:/opt/certs/${DOMAIN_NAME}.crt:ro
       - ../../certs/${DOMAIN_NAME}.key:/opt/certs/${DOMAIN_NAME}.key:ro
     ports:
-      - 8445:443
+      - ${ADMINER_NGINX_PORT}:443
     networks:
       rdl-pgsql-network:
-        ipv4_address: 172.20.5.100
+        ipv4_address: 172.20.0.11
     restart: always
   rdl-pgsql-adminer:
     container_name: rdl-pgsql-adminer
@@ -40,7 +40,7 @@ services:
     image: adminer
     networks:
       rdl-pgsql-network:
-        ipv4_address: 172.20.5.102
+        ipv4_address: 172.20.0.12
     depends_on:
       - rdl-pgsql
     restart: always
@@ -50,7 +50,7 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.20.5.0/24
-        gateway: 172.20.5.1
+      - subnet: 172.20.0.8/29
+        gateway: 172.20.0.9
 volumes:
   rdl-pgsql-store:

@@ -14,11 +14,20 @@ fi
 
 . ../../.password
 
+if [ ! -f ../../.secret ]; then
+	echo "cannot read ../../.secret"
+	exit 254
+fi
+
+. ../../.secret
+
 cat << EOF > .env
 DOMAIN_NAME='${DOMAIN_NAME}'
 POSTGRES_DBNAME='${POSTGRES_DBNAME}'
 POSTGRES_USERNAME='${POSTGRES_USERNAME}'
 POSTGRES_PASSWORD='${POSTGRES_PASSWORD}'
+POSTGRES_PORT='${POSTGRES_PORT}'
+ADMINER_NGINX_PORT='${ADMINER_NGINX_PORT}'
 EOF
 
 rm -f conf/nginx.conf

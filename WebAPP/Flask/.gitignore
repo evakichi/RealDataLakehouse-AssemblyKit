@@ -1,5 +1,4 @@
-application.properties
 certs
 nginx.conf
 Dockerfile
-
+frontend_oidc-config.json

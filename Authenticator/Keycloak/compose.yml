@@ -11,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=${KEYCLOAK_DB_PASSWORD}
     networks:
       rdl-keycloak-network:
-        ipv4_address: 172.25.4.100
+        ipv4_address: 172.20.0.18
     restart: always
   rdl-keycloak:
     container_name: rdl-keycloak
@@ -32,7 +32,7 @@ services:
     command:
       start
     ports:
-      - 8443:8443
+      - ${KEYCLOAK_PORT}:8443
     volumes:
       - rdl-keycloak-volume:/opt/keycloak/data
       - ./kc.sh:/opt/keycloak/bin/kc.sh
@@ -43,7 +43,7 @@ services:
     user: root
     networks:
       rdl-keycloak-network:
-        ipv4_address: 172.25.4.101
+        ipv4_address: 172.20.0.19
     restart: always
     depends_on:
       - rdl-keycloak-db
@@ -56,5 +56,5 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.25.4.0/24
-        gateway: 172.25.4.1
+      - subnet: 172.20.0.16/29
+        gateway: 172.20.0.17

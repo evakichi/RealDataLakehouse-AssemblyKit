@@ -14,10 +14,21 @@ fi
 
 . ../.password
 
+if [ ! -f ../.secret ]; then
+	echo "cannot read ../.secret"
+	exit 254
+fi
+
+. ../.secret
+
 cat << EOF > ./.env
+DOMAIN_NAME='${DOMAIN_NAME}'
 MINIO_ROOT_USER='${MINIO_ROOT_USER}'
 MINIO_ROOT_PASSWORD='${MINIO_ROOT_PASSWORD}' 
-DOMAIN_NAME='${DOMAIN_NAME}'
+MINIO_CONSOLE_NGINX_PORT='${MINIO_CONSOLE_NGINX_PORT}'
+MINIO_CLI_NGINX_PORT='${MINIO_CLI_NGINX_PORT}'
+SPARK_APPLICATION_WEB_UI_PORT='${SPARK_APPLICATION_WEB_UI_PORT}'
+SPARK_JOB_HISTORY_WEB_UI_PORT='${SPARK_JOB_HISTORY_WEB_UI_PORT}'
 EOF
 
 sed "s/__DOMAIN_NAME__/${DOMAIN_NAME}/g" Dockerfile.org > Dockerfile
@@ -25,6 +36,8 @@ sed "s/__DOMAIN_NAME__/${DOMAIN_NAME}/g" ./conf/spark-defaults.conf.org > ./conf
 sed "s/__SPARK_CATALOG_NAME__/${SPARK_CATALOG_NAME}/g" -i ./conf/spark-defaults.conf
 sed "s/__POSTGRES_USERNAME__/${POSTGRES_USERNAME}/g" -i ./conf/spark-defaults.conf 
 sed "s/__POSTGRES_DBNAME__/${POSTGRES_DBNAME}/g" -i ./conf/spark-defaults.conf 
+sed "s/__POSTGRES_PORT__/${POSTGRES_PORT}/g" -i ./conf/spark-defaults.conf 
+sed "s/__MINIO_CLI_NGINX_PORT__/${MINIO_CLI_NGINX_PORT}/g" -i ./conf/spark-defaults.conf 
 sed "s/__SPARK_ENDPOINT_NAME__/${SPARK_ENDPOINT_NAME}/g" -i ./conf/spark-defaults.conf 
 sed "s/__SPARK_WAREHOUSE_NAME__/${SPARK_WAREHOUSE_NAME}/g" -i ./conf/spark-defaults.conf 
 

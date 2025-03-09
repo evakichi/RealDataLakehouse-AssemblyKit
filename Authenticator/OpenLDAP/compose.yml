@@ -1,18 +1,17 @@
 services:
-  rdl-ldap-nginx:
-    container_name: rdl-ldap-nginx
-    hostname: rdl-ldap-nginx
-    image: nginx:stable-alpine3.19-perl
+  rdl-lam-nginx:
+    container_name: rdl-lam-nginx
+    hostname: rdl-lam-nginx
+    image: nginx:stable-perl
     volumes:
       - ./conf/nginx.conf:/etc/nginx/nginx.conf
       - ../../certs/${DOMAIN_NAME}.crt:/opt/certs/${DOMAIN_NAME}.crt:ro
       - ../../certs/${DOMAIN_NAME}.key:/opt/certs/${DOMAIN_NAME}.key:ro
     ports:
-      - 8085:80
-      - 8444:443
+      - ${LAM_NGINX_PORT}:443
     networks:
       rdl-ldap-network:
-        ipv4_address: 172.25.3.100
+        ipv4_address: 172.20.0.26
     restart: always
   rdl-lam:
     container_name: rdl-lam
@@ -29,15 +28,15 @@ services:
       - VIRTUAL_HOST=lam
     networks:
       rdl-ldap-network:
-        ipv4_address: 172.25.3.101
+        ipv4_address: 172.20.0.27
     restart: always
   rdl-ldap:
     container_name: rdl-ldap
     hostname: rdl-ldap
     image: osixia/openldap:1.5.0
     ports:
-      - 389:389
-      - 636:636
+      - ${LDAP_PORT}:389
+      - ${LDAPS_PORT}:636
     environment:
       - LDAP_ORGANISATION=${LDAP_ORGANISATION}
       - LDAP_DOMAIN=${LDAP_DOMAIN}
@@ -60,10 +59,10 @@ services:
     tty: true
     networks:
       rdl-ldap-network:
-        ipv4_address: 172.25.3.102
+        ipv4_address: 172.20.0.28
     restart: always
     depends_on:
-      - rdl-ldap-nginx 
+      - rdl-lam-nginx 
       - rdl-lam 
 networks:
   rdl-ldap-network:
@@ -71,8 +70,8 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.25.3.0/24
-        gateway: 172.25.3.1
+      - subnet: 172.20.0.24/29
+        gateway: 172.20.0.25
 volumes:
   rdl-ldap-data:
   rdl-ldap-config:

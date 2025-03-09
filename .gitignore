@@ -10,3 +10,6 @@ spark-defaults.conf
 kc.sh
 data
 application.properties
+frontend_oidc-config.json
+backend_oidc-config.json
+.secret

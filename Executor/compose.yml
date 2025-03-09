@@ -3,9 +3,9 @@ services:
     container_name: spark-executor
     hostname: spark-executor
     build: .
-#    ports:
-#      - 8080:8080
-#      - 4040:4040
+    ports:
+      - ${SPARK_APPLICATION_WEB_UI_PORT}:8080
+      - ${SPARK_JOB_HISTORY_WEB_UI_PORT}:4040
     tty: true
 #    user: root
     volumes:
@@ -20,7 +20,7 @@ services:
       - TZ=Asia/Tokyo
     networks:
       spark-iceberg-client-network:
-        ipv4_address: 172.30.0.100
+        ipv4_address: 172.20.0.34
     restart: always
 networks:
   spark-iceberg-client-network:
@@ -28,5 +28,5 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.30.0.0/24
-        gateway: 172.30.0.1
+      - subnet: 172.20.0.32/29
+        gateway: 172.20.0.33

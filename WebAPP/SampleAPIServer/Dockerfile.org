@@ -15,5 +15,7 @@ RUN cd keycloak-book-jp/05/sample-resource-server
 COPY ./application.properties /keycloak-book-jp/05/sample-resource-server/src/main/resources/application.properties
 
 WORKDIR /keycloak-book-jp/05/sample-resource-server/
-EXPOSE 8082
+
+EXPOSE __SAMPLE_API_SERVER_PORT__
+
 CMD ["mvn","spring-boot:run"]

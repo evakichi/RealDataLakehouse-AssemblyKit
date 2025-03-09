@@ -4,7 +4,7 @@ services:
     hostname: rdl-sample-api-server
     build: .
     ports:
-      - 8082:8082
+      - ${SAMPLE_API_SERVER_PORT}:8082
     environment:
       - TZ=Asia/Tokyo
     tty: true
@@ -12,12 +12,12 @@ services:
     restart: always
     networks:
       rdl-sample-api-server-network:
-        ipv4_address: 172.20.11.100
+        ipv4_address: 172.20.0.50
 networks:
   rdl-sample-api-server-network:
     driver: bridge
     ipam:
       driver: default
       config:
-      - subnet: 172.20.11.0/24
-        gateway: 172.20.11.1
+      - subnet: 172.20.0.48/29
+        gateway: 172.20.0.49

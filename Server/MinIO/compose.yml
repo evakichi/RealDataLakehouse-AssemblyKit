@@ -9,13 +9,13 @@ services:
       - ../../certs/${DOMAIN_NAME}.key:/opt/certs/${DOMAIN_NAME}.key:ro
     ports:
       - 80:80
-      - 443:443
-      - 9000:9000
+      - ${MINIO_CONSOLE_NGINX_PORT}:443
+      - ${MINIO_CLI_NGINX_PORT}:9000
     environment:
       - TZ=Asia/Tokyo
     networks:
       rdl-minio-network:
-        ipv4_address: 172.25.0.100
+        ipv4_address: 172.20.0.2
     restart: always
   rdl-minio:
     container_name: rdl-minio
@@ -28,7 +28,7 @@ services:
       
       - MINIO_IDENTITY_OPENID_CONFIG_URL_PCJP_SSO=https://${DOMAIN_NAME}:8443/realms/MinIOrealm/.well-known/openid-configuration
       - MINIO_IDENTITY_OPENID_CLIENT_ID_PCJP_SSO=minio
-      - MINIO_IDENTITY_OPENID_CLIENT_SECRET_PCJP_SSO=${MINIO_CLIENT_SECRET}
+      - MINIO_IDENTITY_OPENID_CLIENT_SECRET_PCJP_SSO=${KEYCLOAK_MINIO_CLIENT_SECRET}
       - MINIO_IDENTITY_OPENID_DISPLAY_NAME_PCJP_SSO=MinIO_SSO
       - MINIO_IDENTITY_OPENID_SCOPES_PCJP_SSO=email
       #  #- MINIO_IDENTITY_OPENID_SCOPES_PCJP_SSO="openid,email,preferred_username"
@@ -53,7 +53,7 @@ services:
     tty: true
     networks:
       rdl-minio-network:
-        ipv4_address: 172.25.0.101
+        ipv4_address: 172.20.0.3
     command: ["server", "/data", "--console-address", ":9001","--certs-dir","/root/.minio/certs/CAs"]
     restart: always
     depends_on:
@@ -66,5 +66,5 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.25.0.0/24
-        gateway: 172.25.0.1
+      - subnet: 172.20.0.0/29
+        gateway: 172.20.0.1

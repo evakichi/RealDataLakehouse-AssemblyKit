@@ -12,4 +12,4 @@ schema = StructType([
 ])
 
 df = spark.createDataFrame([], schema)
-df.writeTo("demo.nyc.taxis00000").create()
+df.writeTo("demo.nyc.taxis00002").create()

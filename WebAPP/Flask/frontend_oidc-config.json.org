@@ -1,0 +1,13 @@
+{
+  "web": {
+    "client_id": "minio",
+    "client_secret": "__KEYCLOAK_MINIO_CLIENT_SECRET__",
+    "auth_uri": "https://__DOMAIN_NAME__:__KEYCLOAK_PORT__/realms/MinIOrealm/protocol/openid-connect/auth",
+    "token_uri": "https://__DOMAIN_NAME__:__KEYCLOAK_PORT__/realms/MinIOrealm/protocol/openid-connect/token",
+    "issuer": "https://__DOMAIN_NAME__:__KEYCLOAK_PORT__/realms/MinIOrealm",
+    "userinfo_uri": "https://__DOMAIN_NAME__:__KEYCLOAK_PORT__/realms/MinIOrealm/protocol/openid-connect/userinfo",
+    "redirect_uris": [
+      "https://__DOMAIN_NAME__:__WEBAPP_FLASK_FRONTEND_PORT__/oidc/callback"
+    ]
+  }
+}
