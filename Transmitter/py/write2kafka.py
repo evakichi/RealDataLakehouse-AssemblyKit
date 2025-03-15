@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql.functions import explode
-from pyspark.sql.functions import split, to_binary,encode
+from pyspark.sql.functions import split, to_char,encode,base64,format_string
 from pyspark.sql.types import DoubleType, FloatType, LongType, StructType,StructField, StringType
 import os
 
@@ -10,10 +9,9 @@ spark = SparkSession \
     .getOrCreate()
 
 df = spark.table("demo.nyc.taxis00002")
-df.select(encode(df.store_and_fwd_flag,'UTF-8').alias('value'))
-df.select(encode(df.vendor_id,'UTF-8'))
+df.select(format_string("%d",df.trip_id)).show
 df \
-  .selectExpr("CAST(vendor_id AS BINARY)key","store_and_fwd_flag as value") \
+  .selectExpr("CAST(trip_id AS STRING) as key","cast (store_and_fwd_flag as string) as value") \
   .write \
   .format("kafka") \
   .option("kafka.bootstrap.servers", os.getenv('DOMAIN_NAME')+":9092") \
