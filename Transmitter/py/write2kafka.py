@@ -9,9 +9,9 @@ spark = SparkSession \
     .getOrCreate()
 
 df = spark.table("demo.nyc.taxis00002")
-df.select(format_string("%d",df.trip_id)).show
+df.select(format_string("%f",df.fare_amount)).show
 df \
-  .selectExpr("CAST(trip_id AS STRING) as key","cast (store_and_fwd_flag as string) as value") \
+  .selectExpr("CAST(fare_amount AS STRING) as key","cast (store_and_fwd_flag as STRING) as value") \
   .write \
   .format("kafka") \
   .option("kafka.bootstrap.servers", os.getenv('DOMAIN_NAME')+":9092") \
