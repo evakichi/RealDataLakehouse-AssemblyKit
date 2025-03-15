@@ -17,4 +17,16 @@ if ! ./down.sh; then
 	echo "err"
 	exit 202
 fi
+
+cd ../Transmitter/
+if ! ./down.sh; then
+	echo "err"
+	exit 202
+fi
+
+cd ../Receiver/
+if ! ./down.sh; then
+	echo "err"
+	exit 202
+fi
 exit 0;

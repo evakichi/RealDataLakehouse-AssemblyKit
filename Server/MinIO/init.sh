@@ -14,13 +14,6 @@ fi
 
 . ../../.password
 
-if [ ! -f ../../.secret ]; then
-	echo "cannot read ../.secret"
-	exit 254
-fi
-
-. ../../.secret
-
 cat << EOF > ./.env
 DOMAIN_NAME='${DOMAIN_NAME}'
 MINIO_ROOT_USER='${MINIO_ROOT_USER}'

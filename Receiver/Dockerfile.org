@@ -33,7 +33,7 @@ RUN mvn dependency:get -Dartifact=org.apache.iceberg:iceberg-spark-runtime-3.5_2
     mvn dependency:get -Dartifact=org.apache.iceberg:iceberg-core:1.8.1 && \
     mvn dependency:get -Dartifact=org.apache.iceberg:iceberg-aws:1.8.1 && \
     mvn dependency:get -Dartifact=org.apache.iceberg:iceberg-aws-bundle:1.8.1 && \
-    mvn dependency:get -Dartifact=org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5 && \
+    mvn dependency:get -Dartifact=org.apache.spark:spark-sql-kafka-0-10_2.13:3.5.5 && \
     mvn dependency:get -Dartifact=org.postgresql:postgresql:42.7.5
 
 RUN find /root/.m2/ -name \*.jar -exec mv {} /opt/spark-3.5.5-bin-hadoop3-scala2.13/jars/ \; && rm -rf /root/.m2/

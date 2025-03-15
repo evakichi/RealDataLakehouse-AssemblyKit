@@ -1,0 +1,33 @@
+services:
+  spark-kafka-receiver:
+    container_name: spark-kafka-receiver
+    hostname: spark-kafka-receiver
+    build: .
+    #ports:
+      #- ${SPARK_APPLICATION_WEB_UI_PORT}:8080
+      #- ${SPARK_JOB_HISTORY_WEB_UI_PORT}:4040
+    tty: true
+#    user: root
+    volumes:
+      - ./conf/spark-defaults.conf:/opt/spark-3.5.5-bin-hadoop3-scala2.13/conf/spark-defaults.conf:ro
+      - ./data/:/home/spark/data/:ro
+      - ./py/:/home/spark/py/:ro
+    environment:
+      - AWS_ACCESS_KEY_ID=${MINIO_ROOT_USER}
+      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
+      - AWS_S3_ENDPOINT=${DOMAIN_NAME}:9000
+      - AWS_REGION=us-east-1
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - TZ=Asia/Tokyo
+    networks:
+      spark-kafka-receiver-network:
+        ipv4_address: 172.20.0.74
+    restart: always
+networks:
+  spark-kafka-receiver-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.20.0.72/29
+        gateway: 172.20.0.73
