@@ -3,11 +3,7 @@ services:
     container_name: spark-kafka-transmitter
     hostname: spark-kafka-transmitter
     build: .
-    #ports:
-      #- ${SPARK_APPLICATION_WEB_UI_PORT}:8080
-      #- ${SPARK_JOB_HISTORY_WEB_UI_PORT}:4040
     tty: true
-#    user: root
     volumes:
       - ./conf/spark-defaults.conf:/opt/spark-3.5.5-bin-hadoop3-scala2.13/conf/spark-defaults.conf:ro
       - ./data/:/home/spark/data/:ro
