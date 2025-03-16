@@ -23,4 +23,5 @@ for new_topic in new_topics:
         .format("kafka") \
         .option("kafka.bootstrap.servers", os.getenv('DOMAIN_NAME')+":9092") \
         .option("topic", new_topic.topic) \
+        .option("kafka.group.id", "test01") \
         .save()
