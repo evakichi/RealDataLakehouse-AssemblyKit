@@ -16,10 +16,7 @@ admin_client=AdminClient({'bootstrap.servers': os.getenv("DOMAIN_NAME")+":9092"}
 admin_client.create_topics(new_topics)
 
 for new_topic in new_topics:
-#    list_topics = admin_client.list_topics()
-#    print(t,list_topics)
     df = spark.table("demo.nyc.taxis00003")
-    df.select(format_string("%f",df.fare_amount)).show
     df \
         .selectExpr("CAST(id AS STRING) as key","cast ("+new_topic.topic+" as STRING) as value") \
         .write \
@@ -27,5 +24,3 @@ for new_topic in new_topics:
         .option("kafka.bootstrap.servers", os.getenv('DOMAIN_NAME')+":9092") \
         .option("topic", new_topic.topic) \
         .save()
-#        .selectExpr("CAST(fare_amount AS STRING) as key","cast (store_and_fwd_flag as STRING) as value") \
-#      .option("topic", "topic1") \

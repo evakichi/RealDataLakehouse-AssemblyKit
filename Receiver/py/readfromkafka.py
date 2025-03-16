@@ -21,7 +21,7 @@ for index,topic in enumerate(topics):
     df = spark \
         .read \
         .format("kafka") \
-        .option("kafka.bootstrap.servers", "misumi.lan:9092") \
+        .option("kafka.bootstrap.servers", os.getenv("DOMAIN_NAME")+":9092") \
         .option("subscribe", topic[0]) \
         .load()
     tmp_df = df.select(decode(df.key,'UTF-8').cast('LONG').alias("id"),decode(df.value,'UTF-8').cast(topic[1]).alias(topic[0])) 
