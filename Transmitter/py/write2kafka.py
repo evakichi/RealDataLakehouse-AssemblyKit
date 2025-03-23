@@ -1,13 +1,11 @@
 from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql.functions import split, to_char,encode,base64,format_string
-from pyspark.sql.types import DoubleType, FloatType, LongType, StructType,StructField, StringType
-from kafka import KafkaAdminClient
+#from pyspark.sql.functions import split, to_char,encode,base64,format_string
+#from pyspark.sql.types import DoubleType, FloatType, LongType, StructType,StructField, StringType
 from confluent_kafka.admin import AdminClient,NewTopic
 import os
 
 spark = SparkSession \
     .builder \
-    .appName("StructuredNetworkWordCount") \
     .getOrCreate()
 
 topics = ["vendor_id","trip_id","trip_distance","fare_amount","store_and_fwd_flag"]
@@ -23,5 +21,4 @@ for new_topic in new_topics:
         .format("kafka") \
         .option("kafka.bootstrap.servers", os.getenv('DOMAIN_NAME')+":9092") \
         .option("topic", new_topic.topic) \
-        .option("kafka.group.id", "test01") \
         .save()

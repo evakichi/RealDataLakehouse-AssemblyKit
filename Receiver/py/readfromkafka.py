@@ -1,28 +1,17 @@
 from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql.functions import explode
-from pyspark.sql.functions import split, to_binary,encode,decode,unhex,unbase64,to_number,row_number
-from pyspark.sql.types import DoubleType, FloatType, LongType, StructType,StructField, StringType
-from confluent_kafka.admin import AdminClient,NewTopic
+from pyspark.sql.functions import decode
 import os 
 
 spark = SparkSession \
     .builder \
-    .appName("StructuredNetworkWordCount") \
     .getOrCreate()
 
 spark.sparkContext.setLogLevel("ERROR")
 
-admin_client=AdminClient({'bootstrap.servers': os.getenv("DOMAIN_NAME")+":9092"})
-cluster_metadata = admin_client.list_topics()
-
 topics = [['vendor_id',"LONG"],['trip_id', "LONG"],['trip_distance',"FLOAT"],['fare_amount', "DOUBLE"],['store_and_fwd_flag', "STRING"]]
 for index,topic in enumerate(topics):
-    print(topic[0],topic[1])
     options = {
-        #"kafka.sasl.mechanism": "PLAIN",
-        #"kafka.security.protocol" : "SASL_SSL",
         "kafka.bootstrap.servers": os.getenv("DOMAIN_NAME")+":9092",
-        #"group.id": "test02",
         "subscribe": topic[0],
     }   
     df = spark \
